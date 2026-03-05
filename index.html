@@ -7,34 +7,80 @@
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
   body{
-    background:#000000;
     font-family:'Inter',sans-serif;
-    color:#f0eaff;
     min-height:100vh;
     display:flex;
     align-items:center;
     justify-content:center;
+    transition:background .4s;
   }
+  body.dark{background:#000}
+  body.light{background:#f4f2ff}
+
   .container{display:flex;flex-direction:column;align-items:center;gap:24px;width:400px}
+
+  /* Toggle */
+  .toggle-wrap{display:flex;align-items:center;gap:10px}
+  .toggle-label{font-size:12px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;transition:color .3s}
+  body.dark .toggle-label{color:#7c6fcd}
+  body.light .toggle-label{color:#6d28d9}
+  .toggle{position:relative;width:44px;height:24px;cursor:pointer}
+  .toggle input{opacity:0;width:0;height:0}
+  .slider{position:absolute;inset:0;border-radius:999px;transition:background .3s}
+  body.dark .slider{background:#2a2040}
+  body.light .slider{background:#c4b5fd}
+  .slider:before{content:'';position:absolute;width:18px;height:18px;border-radius:50%;top:3px;left:3px;transition:transform .3s,background .3s}
+  body.dark .slider:before{background:#a78bfa;transform:translateX(0)}
+  body.light .slider:before{background:#7c3aed;transform:translateX(20px)}
+
+  /* Badge */
   .badge{display:inline-flex;align-items:center;justify-content:center;padding:4.8px 16px;background:linear-gradient(109.02deg,#7c3aed 0%,#4c1d95 100%);border-radius:8px;font-size:11.2px;font-weight:700;letter-spacing:-.56px;text-transform:uppercase;color:#ddd6fe;line-height:14px}
   h1{font-family:'Instrument Serif',serif;font-weight:400;font-size:30px;line-height:39px;letter-spacing:-.8px;background:linear-gradient(90deg,#a78bfa 0%,#7c3aed 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-  .sub{font-size:14.4px;font-weight:400;letter-spacing:-.72px;color:#7c6fcd}
-  .card{display:flex;flex-direction:column;align-items:center;padding:32px 28px 28px;gap:28px;width:400px;background:#141122;border:1px solid #2a2040;border-radius:16px}
-  .date-row{display:flex;flex-direction:row;justify-content:space-between;align-items:center;width:342px;padding-top:20px;border-top:1px solid #1e1b2e}
-  .day-name{font-size:20px;font-weight:800;letter-spacing:-1px;color:#f0eaff}
-  .month-day{font-size:13px;font-weight:600;letter-spacing:-.5px;color:#7c6fcd}
-  .week-badge{display:flex;flex-direction:column;align-items:flex-start;padding:5.6px 12px;background:linear-gradient(128.8deg,rgba(124,58,237,.133) 0%,rgba(76,29,149,.333) 100%);border:1px solid #3b2f6e;border-radius:8px;width:62px}
+  .sub{font-size:14.4px;font-weight:400;letter-spacing:-.72px;transition:color .3s}
+  body.dark .sub{color:#7c6fcd}
+  body.light .sub{color:#6d28d9}
+
+  /* Card */
+  .card{display:flex;flex-direction:column;align-items:center;padding:32px 28px 28px;gap:28px;width:400px;border-radius:16px;transition:background .3s,border-color .3s}
+  body.dark .card{background:#141122;border:1px solid #2a2040}
+  body.light .card{background:#ffffff;border:1px solid #e0d9ff;box-shadow:0 4px 32px rgba(124,58,237,.08)}
+
+  /* Date row */
+  .date-row{display:flex;flex-direction:row;justify-content:space-between;align-items:center;width:342px;padding-top:20px;transition:border-color .3s}
+  body.dark .date-row{border-top:1px solid #1e1b2e}
+  body.light .date-row{border-top:1px solid #ede9fe}
+  .day-name{font-size:20px;font-weight:800;letter-spacing:-1px;transition:color .3s}
+  body.dark .day-name{color:#f0eaff}
+  body.light .day-name{color:#1e1b2e}
+  .month-day{font-size:13px;font-weight:600;letter-spacing:-.5px;transition:color .3s}
+  body.dark .month-day{color:#7c6fcd}
+  body.light .month-day{color:#7c3aed}
+  .week-badge{display:flex;flex-direction:column;align-items:flex-start;padding:5.6px 12px;border-radius:8px;width:62px;transition:background .3s,border-color .3s}
+  body.dark .week-badge{background:linear-gradient(128.8deg,rgba(124,58,237,.133) 0%,rgba(76,29,149,.333) 100%);border:1px solid #3b2f6e}
+  body.light .week-badge{background:linear-gradient(128.8deg,rgba(124,58,237,.08) 0%,rgba(76,29,149,.15) 100%);border:1px solid #c4b5fd}
   .week-lbl{font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:#a78bfa}
-  .week-num{font-size:22px;font-weight:800;letter-spacing:-1px;color:#c4b5fd;text-align:center;width:100%}
+  .week-num{font-size:22px;font-weight:800;letter-spacing:-1px;color:#7c3aed;text-align:center;width:100%}
 </style>
 </head>
-<body>
+<body class="dark">
 <div class="container">
+
+  <!-- Toggle -->
+  <div class="toggle-wrap">
+    <span class="toggle-label">☀️ Light</span>
+    <label class="toggle">
+      <input type="checkbox" id="themeToggle" checked>
+      <span class="slider"></span>
+    </label>
+    <span class="toggle-label">🌙 Dark</span>
+  </div>
+
   <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
     <div class="badge">Clock</div>
     <h1>World Clock</h1>
     <p class="sub">Your current local time</p>
   </div>
+
   <div class="card">
     <canvas id="clock" width="260" height="260"></canvas>
     <div class="date-row">
@@ -49,33 +95,58 @@
     </div>
   </div>
 </div>
+
 <script>
+  // Theme toggle
+  var toggle = document.getElementById('themeToggle');
+  toggle.addEventListener('change', function(){
+    document.body.className = this.checked ? 'dark' : 'light';
+  });
+
+  // Clock
   var canvas=document.getElementById('clock'),ctx=canvas.getContext('2d');
   var W=260,H=260,cx=130,cy=130,R=120;
   var MONTHS=["January","February","March","April","May","June","July","August","September","October","November","December"];
   var DAYS=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+
   function getWeek(d){var dt=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())),day=dt.getUTCDay()||7;dt.setUTCDate(dt.getUTCDate()+4-day);var y=new Date(Date.UTC(dt.getUTCFullYear(),0,1));return Math.ceil((((dt-y)/86400000)+1)/7)}
+
+  function isDark(){ return document.body.classList.contains('dark') }
+
   function draw(){
     var now=new Date();
+    var dark=isDark();
     ctx.clearRect(0,0,W,H);
+
+    // Face
     var bg=ctx.createRadialGradient(cx,cy-20,10,cx,cy,R);
-    bg.addColorStop(0,'#1e1b2e');bg.addColorStop(1,'#100e1c');
+    if(dark){bg.addColorStop(0,'#1e1b2e');bg.addColorStop(1,'#100e1c')}
+    else{bg.addColorStop(0,'#f5f3ff');bg.addColorStop(1,'#ede9fe')}
     ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.fillStyle=bg;ctx.fill();
-    ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.strokeStyle='#2a2040';ctx.lineWidth=2;ctx.stroke();
-    ctx.beginPath();ctx.arc(cx,cy,R-8,0,Math.PI*2);ctx.strokeStyle='#1e1b2e';ctx.lineWidth=1;ctx.stroke();
+    ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.strokeStyle=dark?'#2a2040':'#ddd6fe';ctx.lineWidth=2;ctx.stroke();
+    ctx.beginPath();ctx.arc(cx,cy,R-8,0,Math.PI*2);ctx.strokeStyle=dark?'#1e1b2e':'#ede9fe';ctx.lineWidth=1;ctx.stroke();
+
+    // Ticks
     for(var i=0;i<60;i++){
       var a=(i/60)*Math.PI*2-Math.PI/2,isH=i%5===0,to=R-9,ti=isH?R-22:R-15;
       ctx.beginPath();ctx.moveTo(cx+to*Math.cos(a),cy+to*Math.sin(a));ctx.lineTo(cx+ti*Math.cos(a),cy+ti*Math.sin(a));
-      ctx.strokeStyle=isH?'#a78bfa':'#2e2550';ctx.lineWidth=isH?2.5:1;ctx.lineCap='round';ctx.stroke();
-      if(isH){var hr=i===0?12:i/5,nr=R-32;ctx.font='700 11px Inter,sans-serif';ctx.fillStyle='#5b4fa0';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(hr,cx+nr*Math.cos(a),cy+nr*Math.sin(a))}
+      ctx.strokeStyle=isH?'#a78bfa':(dark?'#2e2550':'#c4b5fd');ctx.lineWidth=isH?2.5:1;ctx.lineCap='round';ctx.stroke();
+      if(isH){var hr=i===0?12:i/5,nr=R-32;ctx.font='700 11px Inter,sans-serif';ctx.fillStyle=dark?'#5b4fa0':'#7c3aed';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(hr,cx+nr*Math.cos(a),cy+nr*Math.sin(a))}
     }
+
+    // Hands
     var s=now.getSeconds()+now.getMilliseconds()/1000,m=now.getMinutes()+s/60,h=(now.getHours()%12)+m/60;
     var sa=(s/60)*Math.PI*2-Math.PI/2,ma=(m/60)*Math.PI*2-Math.PI/2,ha=(h/12)*Math.PI*2-Math.PI/2;
-    ctx.save();ctx.shadowColor='#7c3aed';ctx.shadowBlur=10;ctx.beginPath();ctx.moveTo(cx-R*.12*Math.cos(ha),cy-R*.12*Math.sin(ha));ctx.lineTo(cx+R*.5*Math.cos(ha),cy+R*.5*Math.sin(ha));ctx.strokeStyle='#f0eaff';ctx.lineWidth=6;ctx.lineCap='round';ctx.stroke();ctx.restore();
-    ctx.save();ctx.shadowColor='#a78bfa';ctx.shadowBlur=8;ctx.beginPath();ctx.moveTo(cx-R*.14*Math.cos(ma),cy-R*.14*Math.sin(ma));ctx.lineTo(cx+R*.72*Math.cos(ma),cy+R*.72*Math.sin(ma));ctx.strokeStyle='#c4b5fd';ctx.lineWidth=3.5;ctx.lineCap='round';ctx.stroke();ctx.restore();
+
+    ctx.save();ctx.shadowColor='#7c3aed';ctx.shadowBlur=10;ctx.beginPath();ctx.moveTo(cx-R*.12*Math.cos(ha),cy-R*.12*Math.sin(ha));ctx.lineTo(cx+R*.5*Math.cos(ha),cy+R*.5*Math.sin(ha));ctx.strokeStyle=dark?'#f0eaff':'#1e1b2e';ctx.lineWidth=6;ctx.lineCap='round';ctx.stroke();ctx.restore();
+    ctx.save();ctx.shadowColor='#a78bfa';ctx.shadowBlur=8;ctx.beginPath();ctx.moveTo(cx-R*.14*Math.cos(ma),cy-R*.14*Math.sin(ma));ctx.lineTo(cx+R*.72*Math.cos(ma),cy+R*.72*Math.sin(ma));ctx.strokeStyle='#7c3aed';ctx.lineWidth=3.5;ctx.lineCap='round';ctx.stroke();ctx.restore();
     ctx.save();ctx.shadowColor='#f472b6';ctx.shadowBlur=10;ctx.beginPath();ctx.moveTo(cx-R*.2*Math.cos(sa),cy-R*.2*Math.sin(sa));ctx.lineTo(cx+R*.8*Math.cos(sa),cy+R*.8*Math.sin(sa));ctx.strokeStyle='#f472b6';ctx.lineWidth=1.5;ctx.lineCap='round';ctx.stroke();ctx.restore();
+
+    // Center
     ctx.beginPath();ctx.arc(cx,cy,6,0,Math.PI*2);ctx.fillStyle='#a78bfa';ctx.fill();
-    ctx.beginPath();ctx.arc(cx,cy,3,0,Math.PI*2);ctx.fillStyle='#f0eaff';ctx.fill();
+    ctx.beginPath();ctx.arc(cx,cy,3,0,Math.PI*2);ctx.fillStyle=dark?'#f0eaff':'#fff';ctx.fill();
+
+    // Date
     document.getElementById('dayName').textContent=DAYS[now.getDay()];
     document.getElementById('monthDay').textContent=MONTHS[now.getMonth()]+' '+now.getDate();
     document.getElementById('weekNum').textContent=getWeek(now);
